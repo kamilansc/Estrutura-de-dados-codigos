@@ -135,7 +135,7 @@ class Lista{
 		};
 
 
-		// Questão 4
+		// Questão 5
 		Lista* copia_invertida_lista(Lista *original){
 			Lista *copia = new Lista();
 			No *atual = original->inicio;
@@ -149,7 +149,7 @@ class Lista{
 		}
 
 
-		// Questão 5
+		// Questão 6
 		void inverter_lista(Lista *lista){
 			No *anterior = NULL;
 			No *atual = lista->inicio;
