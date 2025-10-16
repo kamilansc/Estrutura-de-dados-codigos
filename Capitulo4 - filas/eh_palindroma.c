@@ -15,8 +15,8 @@ int main(){
     for (int i=0; s[i]; i++)
         if (isalpha(s[i]))
         {
-            enfileira(s[i], F);
-            empilha(s[i], P);
+            enfileira(toupper(s[i]), F);  // Questão 3 - aplicação de toupper() para converter maiúscula
+            empilha(toupper(s[i]), P);    // pra minúscula
         }
     
     while (!vaziaf(F) && desenfileira(F) == desempilha(P));
