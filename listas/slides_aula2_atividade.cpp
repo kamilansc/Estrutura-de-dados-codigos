@@ -2,15 +2,17 @@
 #include <string.h>
 #include <iostream>
 using namespace std;
+
 class No{
 	public: 
 		int mat;
-		char nome[23];
-		No *prox; 
-		No(int m, const char* n) {
-			mat=m;
-			strcpy(nome, n);
-			prox=NULL;
+		string nome;
+		No *prox;
+
+		No(int m, string n) {
+			mat = m;
+			nome = n;
+			prox = NULL;
 		}
 };
 
@@ -23,22 +25,9 @@ class Lista{
 			fim=NULL;
 		}
 
-
-		void add_fim(int mat, const char nome[23]){
-			No *novo = new No(mat, nome);
-			if (inicio == NULL){
-				inicio = novo;
-				fim = novo;
-			}
-			else {
-				fim->prox = novo;
-				fim = novo;
-			}
-			
-		};
 		
-
-		void add_inicio(int mat, const char nome[23]){
+		// Questão 1
+		void add_inicio(int mat, string nome){
 		No *novo = new No(mat, nome);
 		if (inicio == NULL){
 			inicio = novo;
@@ -49,96 +38,70 @@ class Lista{
 		}
 		};
 
-	
-		void adicionar_ordenado(int mat, const char nome[23]){
-			No *novo = new No(mat, nome);
-			if (inicio == NULL || novo->mat < inicio->mat)
-			{
-				novo->prox = inicio;
-				inicio = novo;
-				if (fim == NULL) fim = novo;
-				return;
-			}
-
-			No *anterior = inicio;
-			No *atual = inicio->prox;
-			
-			while (atual != NULL && novo->mat > atual->mat)
-			{
-				anterior = atual;
-				atual = atual->prox;
-			}
-			anterior->prox = novo;
-			novo->prox = atual;
-
-			if (atual == NULL)
-			{
-				fim = novo;
-			}
-			
-		};
-		
-		// Questão 4
-		void mostrar(){
-			No *atual = inicio;
-			while (atual!=NULL){
-				printf("\n Mat: %d Nome: %s", atual->mat, atual->nome);
-				atual = atual->prox;
-			}
-		};
-	
-		// Questão 3
-		int remover(int cod){
-			No *atual = inicio;
-			No *anterior = NULL;
-				while (atual != NULL){
-					if (atual->mat == cod){
-
-						if (atual == inicio){
-							inicio = inicio->prox;
-						}
-						else{
-							if (atual == fim){
-								fim = anterior;
-								fim->prox = NULL;
-							}
-							else{
-								anterior->prox = atual->prox;
-							}
-						}
-						delete(atual);
-						return 1;
-					}
-					anterior = atual;
-					atual = atual->prox;
-				}
-				return 0;
-		};
 
 		// Questão 2
-		int consultar (int mat) {
+		void consultar (int mat) {
 			No *atual = inicio;
 			while (atual != NULL)
 			{
 				if (atual->mat == mat)
 				{
-					printf("\nAluno encontrado! \nMatrícula: %d Nome: %s", atual->mat, atual->nome);
-					return 1;
+					cout << "Aluno encontrado!" << endl;
+					cout << "|Matrícula: " << atual->mat << endl;
+					cout << "|Nome: " << atual->nome << endl;
+					return;
 				}
-				else
 				{
-					atual = atual->prox;
+				atual = atual->prox;
 				}
 			}
-			cout << "\nAluno não encontrado!";
-			return 0;	
+			cout << "\nAluno não encontrado!";	
 		};
+	
+
+		// Questão 3
+		void remover(int mat){
+			No *atual = inicio;
+			No *anterior = NULL;
+				while (atual != NULL){
+					if (atual->mat == mat){
+
+						if (atual == inicio){
+							inicio = inicio->prox;
+						}
+						else if (atual == fim){
+							fim = anterior;
+							fim->prox = NULL;
+							}
+						else {
+							anterior->prox = atual->prox;
+						}
+						delete(atual);
+						return;
+					}
+					anterior = atual;
+					atual = atual->prox;
+				}
+				cout << "Aluno não encontrado!" << endl;
+		}
+
+
+		// Questão 4
+		void listar(){
+			No *atual = inicio;
+			while (atual!=NULL){
+				cout << "|Matrícula:" << atual->mat <<endl;
+				cout << "|Nome: " << atual->nome <<endl;
+				cout << "---------------------" <<endl;
+				atual = atual->prox;
+			}
+		}
 
 
 		// Questão 5
-		Lista* copia_invertida_lista(Lista *original){
+		Lista* copia_invertida_lista(){
 			Lista *copia = new Lista();
-			No *atual = original->inicio;
+			No *atual = this->inicio;
 
 			while (atual != NULL)
 			{
@@ -150,12 +113,12 @@ class Lista{
 
 
 		// Questão 6
-		void inverter_lista(Lista *lista){
+		void inverter_lista(){
 			No *anterior = NULL;
-			No *atual = lista->inicio;
+			No *atual = this->inicio;
 			No *proximo = NULL;
 			
-			lista->fim = lista->inicio;
+			this->fim = this->inicio;
 			while (atual != NULL)
 			{
 				proximo = atual->prox;
@@ -163,7 +126,7 @@ class Lista{
 				anterior = atual;
 				atual = proximo;
 			}
-			lista->inicio = anterior;
+			this->inicio = anterior;
 		}
 };
 
@@ -171,38 +134,33 @@ class Lista{
 int main(){
 	Lista *turma=new Lista();
 	
-	turma->add_fim(17, "Kamila");
-	turma->mostrar();
-	
-	printf("\n");
+	turma->add_inicio(17, "Kamila");
 	turma->add_inicio(25, "Maria Luiza");
-	turma->add_fim(27, "Mylena");
+	turma->add_inicio(27, "Mylena");
 	turma->add_inicio(15, "Cecília");
-	turma->mostrar();
+	turma->add_inicio(10, "Mariane");
+	turma->add_inicio(20, "Maria Caroline");
+	turma->add_inicio(12, "Itallo");
+	turma->add_inicio(5, "Mariana");
+	turma->add_inicio(6, "Lívia");
+
+	cout << "Turma: " << endl;
+	turma->listar();
 	
-	turma->remover(15);
-	printf("\n\nDepois da remocao de '15':");
-	turma->mostrar();
-	
+	cout << "\n\nConsultar aluno de matrícula 17: " << endl;
 	turma->consultar(17);
+
+	cout << "\n\nDepois da remocao de '15': " << endl;
+	turma->remover(15);
+	turma->listar();
 	
-	Lista *invertida = turma->copia_invertida_lista(turma);
-	printf("\n\nCópia invertida da turma: ");
-	invertida->mostrar();
-	printf("\n\n");
+	Lista *invertida = turma->copia_invertida_lista();
+	cout << "\n\nCópia invertida da turma: " << endl;
+	invertida->listar();
 
-	Lista *turma2 = new Lista();
-	turma2->adicionar_ordenado(10, "Mariane");
-	turma2->adicionar_ordenado(20, "Maria Caroline");
-	turma2->adicionar_ordenado(13, "Kamila");
-	turma2->adicionar_ordenado(12, "Itallo");
-	turma2->adicionar_ordenado(17, "Mariana");
-	turma2->adicionar_ordenado(5, "Mariana");
-	turma2->mostrar();
+	cout << "\n\nPrópria turma invertida:" << endl;
+	turma->inverter_lista();
+	turma->listar();
 
-	turma2->inverter_lista(turma2);
-	printf("\n");
-	turma2->mostrar();
-
-	//turma->inv_lista2();
+	return 0;
 }
